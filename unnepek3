@@ -1,0 +1,71 @@
+#!/bin/bash
+RCH=$(arch)
+ARGC=$#
+
+function hasznalata
+{
+ 
+echo "hasznalata: $(basename $0) Ev"
+echo "Peldaul. $(basename $0) 2020"
+exit 1
+ 
+}
+ 
+[[ $ARGC -ne 1 ]] &&  hasznalata
+ 
+ev="$1"
+dformat='+%A, %B %d, %Y'
+ 
+function nth_xday_of_month
+{
+ 
+my_nth=$1
+my_xday=$2
+honap=$3
+ev=$4
+ 
+case "$my_nth" in
+ 
+1)  datum=$(echo {01..07})
+    ;;
+2)  datum=$(echo {08..14})
+    ;;
+3)  datum=$(seq 15 21)
+    ;;
+4)  datum=$(seq 22 28)
+   ;;
+5)  datum=$(seq 29 31)
+    ;;
+*) echo "Rossz nap a heten"
+   exit 1
+   ;;
+esac
+ 
+ 
+for x in $datum; do
+  nthday=$(date '+%u' -d "${ev}${honap}${x}")
+  if [ "$nthday" -eq "$my_xday" ]; then
+   date "${dformat}" -d "${ev}${honap}${x}"
+  fi
+done
+}
+ 
+for x in {31..01}; do y=$(date '+%u' -d "${ev}05${x}"); if [ "$y" -eq 1 ]; then memday="${x}" ; break; fi ; done
+ 
+echo "Ujev -Munkaszuneti nap: " $(date "${dformat}"  -d "${ev}0101")
+echo "Magyar kultura napja:   " $(date "${dformat}"  -d "${ev}0122")
+echo "A koztarsasag napja:      " $(date "${dformat}"  -d "${ev}0201")
+echo "1848 forradalom unnepe - Munkaszuneti nap" $(date "${dformat}" -d "${ev}0315")
+echo "Holokauszt aldozatainak emleknapja: " $(date "${dformat}" -d "${ev}0416")
+echo "Munka unnepe - Munkaszuneti nap" $(date "${dformat}" -d "${ev}0501")
+echo "Nemzeti osszetartozas napja: " $(date "${dformat}" -d "${ev}0604")
+echo "Nagy Imre emleknap: " $(date "${dformat}" -d "${ev}0616")
+echo "Nandorfehervari diadal emleknapja": $(date "${dformat}"  -d "${ev}0722")
+echo "Allamalapitas unnepe - Munkaszuneti nap" :$(date "${dformat}"  -d "${ev}0820")
+echo "Aradi vertanuk emleknapja" $(date "${dformat}"  -d "${ev}1006")
+echo "1956-os forradalom unnepe - Munkaszuneti nap" $(date "${dformat}"  -d "${ev}1013")
+echo "Mindenszentek - Munkaszuneti nap" $(date "${dformat}"  -d "${ev}1101")
+echo "Halottak napja" $(date "${dformat}"  -d "${ev}1102")
+echo "Magyar nyelv napa" $(date "${dformat}"  -d "${ev}1113")
+echo "Karacsony" $(date "${dformat}"  -d "${ev}1225")
+echo "Karacsony" $(date "${dformat}"  -d "${ev}1226")
